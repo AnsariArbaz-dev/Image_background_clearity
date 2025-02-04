@@ -69,18 +69,24 @@ def plot_hue_distribution(image_path):
     
     if len(counts) > 1:
         sorted_indices = np.argsort(counts)[::-1]  
+        print(sorted_indices)
         highest_count = counts[sorted_indices[0]]
-        second_highest_count = counts[sorted_indices[1]]
-        third_highest_count = counts[sorted_indices[2]]
-
+        
+        try:
+            second_highest_count = counts[sorted_indices[1]]
+            third_highest_count = counts[sorted_indices[2]]
+        except:
+            second_highest_count = None
+            third_highest_count = None
         print(highest_count,second_highest_count)
-        if second_highest_count < (0.4 * highest_count):
+        
+        
+        
+        if second_highest_count and  second_highest_count < (0.4 * highest_count):
             label = "Clear"
-            if third_highest_count >= (0.6 * second_highest_count):
-                label = "Not Clear" 
-
-
-
+            if third_highest_count and third_highest_count >= (0.6 * second_highest_count):
+                label = "Not Clear"     
+        
 
     fig, axes = plt.subplots(1, 2, figsize=(15, 5))
 
@@ -101,14 +107,29 @@ def plot_hue_distribution(image_path):
     
     plt.savefig(f"/home/arbaz/Downloads/background_clear_or_not/result_hsv_plots/{id}.jpg")
 
+    return label
+
 image_folder = "frames"
 images = sorted(os.listdir(image_folder))
+
+right_preds = 0
+
 
 for im in images:
     image_path = os.path.join(image_folder, im)
     print(f"Processing: {image_path}")
-    plot_hue_distribution(image_path)
+    label = plot_hue_distribution(image_path)
 
+    if label == "Clear" and "clear" in image_path:
+        right_preds +=1
+    elif label == "Not Clear" and "unclear" in image_path:
+        right_preds +=1
+        
+#Accuracy Calculations
+accuracy = right_preds / len(images)
+print(f"Accuracy: {accuracy}")
+
+#Accuracy comes 0.790625"
 
 
 # Please look at result_hsv_plots  for results 
