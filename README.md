@@ -1,5 +1,5 @@
 # Image_background_clearity
-Given an image of a person, You need to classify whether the background of the person is of uniform color, meaning a single color
+Given an image of a person, You need to classify whether the background of the person is uniform or not.
 
 The objective of these experiments is to determine whether the background of an image is "clear" or "not clear" by analyzing its colors and structure.
  Different approaches, including color variance, hue distribution, and deep learning, were tested to achieve accurate classification. 
